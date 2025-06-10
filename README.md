@@ -2,7 +2,8 @@
 
 Este es un proyecto para afianzar conocimientos de go
 
-Diagrama del proyecto
+Diagrama del proyecto=>
+
 
 ```
 .
