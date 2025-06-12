@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: auth_services
+    ports: "3001:3001"
+  environment:
+    - AWS_REGION=us-east-1
+    - AWS_ACCESS_KEY_ID=test
+    - AWS_SECRET_ACCESS_KEY=test
+    - DYNAMODB_ENDPOINT=
+    - DYNAMODB_TABLE_NAME=Users
+    - JWT_SECRET=secret
+  depends_on:
+    - localstack
+  volumes:
+    - .:/app 
+  
+localstack: 
+  image: localstack/localstack:latest 
+  container_name: localstack_db 
+  ports: 
+    - "4566:4566" 
+  environment: 
+    - SERVICES=dynamodb  
+    - DEFAULT_REGION=us-east-1 
+    - EAGER_SERVICE_LOADING=1 
+    - DOCKER_HOST=unix:///var/run/docker.sock 
+  volumes: 
+    - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack" # Persistencia de datos 
+    - "/var/run/docker.sock:/var/run/docker.sock" 
+    - "./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh" # Script de inicialización 
